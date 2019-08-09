@@ -14,8 +14,6 @@ Data representation and IO tools for the BED file format.
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Build Status](https://travis-ci.org/BioJulia/BED.jl.svg?branch=master)](https://travis-ci.org/BioJulia/BED.jl)
 [![Build status](https://ci.appveyor.com/api/projects/status/jny2ep4u3cmly8pj/branch/master?svg=true)](https://ci.appveyor.com/project/BioJulia/BED-jl/branch/master)
-[![BED](http://pkg.julialang.org/badges/BED_0.7.svg)](http://pkg.julialang.org/?pkg=BED)
-[![BED](http://pkg.julialang.org/badges/BED_1.0.svg)](http://pkg.julialang.org/?pkg=BED)
 [![codecov.io](http://codecov.io/github/BioJulia/BED.jl/coverage.svg?branch=master)](http://codecov.io/github/BioJulia/BED.jl?branch=master)
 
 ## Installation
