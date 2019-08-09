@@ -56,13 +56,6 @@ function BioCore.IO.stream(reader::Reader)
     return reader.state.stream
 end
 
-function GenomicFeatures.eachoverlap(reader::Reader, interval::GenomicFeatures.Interval)
-    if reader.index === nothing
-        throw(ArgumentError("index is null"))
-    end
-    return GenomicFeatures.Indexes.TabixOverlapIterator(reader, interval)
-end
-
 const record_machine, file_machine = (function ()
     cat = Automa.RegExp.cat
     rep = Automa.RegExp.rep
