@@ -121,9 +121,9 @@ function Base.:(==)(record1::Record, record2::Record)
         r1 = record1.filled
         r2 = record2.filled
         return length(r1) == length(r2) && memcmp(pointer(record1.data, first(r1)), pointer(record2.data, first(r2)), length(r1)) == 0
-    else
-        return isfilled(record1) == isfilled(record2) == false
     end
+
+    return isfilled(record1) == isfilled(record2) == false
 end
 
 function Base.copy(record::Record)
