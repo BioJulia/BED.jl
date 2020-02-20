@@ -3,7 +3,7 @@
 
 mutable struct Reader <: BioCore.IO.AbstractReader
     state::BioCore.Ragel.State
-    index::Union{GenomicFeatures.Indexes.Tabix,Nothing}
+    index::Union{Indexes.Tabix,Nothing}
 
     function Reader(input::BufferedStreams.BufferedInputStream, index=nothing)
         return new(BioCore.Ragel.State(file_machine.start_state, input), index)
@@ -27,7 +27,7 @@ Arguments
 """
 function Reader(input::IO; index=nothing)
     if isa(index, AbstractString)
-        index = GenomicFeatures.Indexes.Tabix(index)
+        index = Indexes.Tabix(index)
     end
     return Reader(BufferedStreams.BufferedInputStream(input), index)
 end
@@ -39,7 +39,7 @@ function Reader(filepath::AbstractString; index=:auto)
     if endswith(filepath, ".bgz")
         input = BGZFStreams.BGZFStream(filepath)
         if index == :auto
-            index = GenomicFeatures.Indexes.findtabix(filepath)
+            index = Indexes.findtabix(filepath)
         end
     else
         input = open(filepath)
@@ -59,7 +59,7 @@ function GenomicFeatures.eachoverlap(reader::Reader, interval::GenomicFeatures.I
     if reader.index === nothing
         throw(ArgumentError("index is null"))
     end
-    return GenomicFeatures.Indexes.TabixOverlapIterator(reader, interval)
+    return Indexes.TabixOverlapIterator(reader, interval)
 end
 
 const record_machine, file_machine = (function ()

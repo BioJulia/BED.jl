@@ -1,6 +1,48 @@
 using Test
 using BED
 
+
+using Distributions
+using GenomicFeatures
+
+import Random
+import YAML
+import ColorTypes: RGB
+import FixedPointNumbers: N0f8
+import BGZFStreams
+
+function get_bio_fmt_specimens(commit="222f58c8ef3e3480f26515d99d3784b8cfcca046")
+    path = joinpath(dirname(@__FILE__), "BioFmtSpecimens")
+    if !isdir(path)
+        run(`git clone https://github.com/BioJulia/BioFmtSpecimens.git $(path)`)
+    end
+    cd(path) do
+        #run(`git checkout $(commit)`)
+    end
+    return path
+end
+
+# Generate an array of n random Interval{Int} object. With sequence names
+# samples from seqnames, and intervals drawn to lie in [1, maxpos].
+function random_intervals(seqnames, maxpos::Int, n::Int)
+    seq_dist = Categorical(length(seqnames))
+    strand_dist = Categorical(2)
+    length_dist = Normal(1000, 1000)
+    intervals = Vector{Interval{Int}}(undef, n)
+    for i in 1:n
+        intlen = maxpos
+        while intlen >= maxpos || intlen <= 0
+            intlen = ceil(Int, rand(length_dist))
+        end
+        first = rand(1:maxpos-intlen)
+        last = first + intlen - 1
+        strand = rand(strand_dist) == 1 ? STRAND_POS : STRAND_NEG
+        intervals[i] = Interval{Int}(seqnames[rand(seq_dist)],
+                                     first, last, strand, i)
+    end
+    return intervals
+end
+
 @testset "BED" begin
     @testset "Record" begin
         record = BED.Record("chr1\t17368\t17436")
@@ -16,7 +58,7 @@ using BED
         @test !BED.hasblockcount(record)
         @test !BED.hasblocksizes(record)
         @test !BED.hasblockstarts(record)
-        @test startswith(repr(record), "GenomicFeatures.BED.Record:\n")
+        @test startswith(repr(record), "BED.Record:\n")
         @test string(record) == "chr1\t17368\t17436"
 
         record = BED.Record("chrXIII\t854794\t855293\tYMR292W\t0\t+\t854794\t855293\t0\t2\t22,395,\t0,104,")
@@ -32,7 +74,7 @@ using BED
         @test BED.blockcount(record) === 2
         @test BED.blocksizes(record) == [22, 395]
         @test BED.blockstarts(record) == [1, 105]
-        @test startswith(repr(record), "GenomicFeatures.BED.Record:\n")
+        @test startswith(repr(record), "BED.Record:\n")
         @test string(record) == "chrXIII\t854794\t855293\tYMR292W\t0\t+\t854794\t855293\t0\t2\t22,395,\t0,104,"
 
         record = BED.Record("chrX\t151080532\t151081699\tCHOCOLATE1\t0\t-\t151080532\t151081699\t255,127,36")
@@ -48,7 +90,7 @@ using BED
         @test !BED.hasblockcount(record)
         @test !BED.hasblocksizes(record)
         @test !BED.hasblockstarts(record)
-        @test startswith(repr(record), "GenomicFeatures.BED.Record:\n")
+        @test startswith(repr(record), "BED.Record:\n")
         @test string(record) == "chrX\t151080532\t151081699\tCHOCOLATE1\t0\t-\t151080532\t151081699\t255,127,36"
     end
 

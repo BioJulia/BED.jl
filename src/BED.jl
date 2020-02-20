@@ -9,6 +9,7 @@ import ColorTypes
 import FixedPointNumbers: N0f8
 
 using GenomicFeatures
+using Indexes
 
 include("record.jl")
 include("reader.jl")
