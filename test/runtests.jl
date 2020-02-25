@@ -3,24 +3,13 @@ using BED
 
 
 using Distributions
+using FormatSpecimens
 using GenomicFeatures
 
 import Random
-import YAML
 import ColorTypes: RGB
 import FixedPointNumbers: N0f8
 import BGZFStreams
-
-function get_bio_fmt_specimens(commit="222f58c8ef3e3480f26515d99d3784b8cfcca046")
-    path = joinpath(dirname(@__FILE__), "BioFmtSpecimens")
-    if !isdir(path)
-        run(`git clone https://github.com/BioJulia/BioFmtSpecimens.git $(path)`)
-    end
-    cd(path) do
-        #run(`git checkout $(commit)`)
-    end
-    return path
-end
 
 # Generate an array of n random Interval{Int} object. With sequence names
 # samples from seqnames, and intervals drawn to lie in [1, maxpos].
@@ -130,18 +119,31 @@ end
         return expected_entries == read_entries
     end
 
-    path = joinpath(get_bio_fmt_specimens(), "BED")
-    for specimen in YAML.load_file(joinpath(path, "index.yml"))
-        if "gzip" ∈ split(get(specimen, "tags", ""))
+    dir_bed = path_of_format("BED")
+
+    for specimen in list_valid_specimens("BED")
+
+        if hastag(specimen, "gzip")
             # skip compressed files
             continue
         end
-        valid = get(specimen, "valid", true)
-        if valid
-            @test check_bed_parse(joinpath(path, specimen["filename"]))
-        else
-            @test_throws Exception check_bed_parse(joinpath(path, specimen["filename"]))
+
+        filepath = joinpath(dir_bed, filename(specimen))
+
+        @test check_bed_parse(filepath)
+
+    end
+
+    for specimen in list_invalid_specimens("BED")
+
+        if hastag(specimen, "gzip")
+            # skip compressed files
+            continue
         end
+
+        filepath = joinpath(dir_bed, filename(specimen))
+
+        @test_throws Exception check_bed_parse(filepath)
     end
 
     #=
@@ -199,7 +201,7 @@ end
     end
 
     @testset "eachoverlap" begin
-        path = joinpath(get_bio_fmt_specimens(), "BED", "ws245Genes.WBGene.bed.bgz")
+        path = joinpath(path_of_format("BED"), "ws245Genes.WBGene.bed.bgz")
         stream = BGZFStreams.BGZFStream(path)
         reader = BED.Reader(stream, index=string(path, ".tbi"))
         for (interval, n_records) in [
