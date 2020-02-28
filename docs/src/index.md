@@ -1,4 +1,4 @@
-# <img src="./docs/src/assets/logo.svg" width="30%" align="right" /> BED.jl
+# BED.jl
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Latest Release](https://img.shields.io/github/release/BioJulia/BED.jl.svg)](https://github.com/BioJulia/BED.jl/releases/latest)
