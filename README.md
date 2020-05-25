@@ -13,15 +13,8 @@
 BED provides I/O and utilities for the BED file format.
 
 ## Installation
-The latest version of BED is made available to install through BioJulia's package registry.
-By default, Julia's package manager only includes the "General" package registry.
-
-To add the BioJulia registry from the [Julia REPL](https://docs.julialang.org/en/v1/manual/getting-started/), press `]` to enter [pkg mode](https://docs.julialang.org/en/v1/stdlib/Pkg/), then enter the following command:
-```julia
-registry add https://github.com/BioJulia/BioJuliaRegistry.git
-```
-
-After adding the registry to your configuration, you can install BED while in [pkg mode](https://docs.julialang.org/en/v1/stdlib/Pkg/) with the following:
+You can install the BED package from the [Julia REPL](https://docs.julialang.org/en/v1/manual/getting-started/).
+Press `]` to enter [pkg mode](https://docs.julialang.org/en/v1/stdlib/Pkg/), then enter the following command:
 ```julia
 add BED
 ```
