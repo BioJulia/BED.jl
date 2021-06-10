@@ -22,7 +22,7 @@ ColorTypes = "0.7, 0.8, 0.9"
 FixedPointNumbers = "0.5, 0.6, 0.7"
 GenomicFeatures = "2"
 Indexes = "0.1"
-julia = "1.0"
+julia = "1"
 
 [extras]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
