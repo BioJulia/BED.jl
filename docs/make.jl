@@ -1,10 +1,14 @@
 using Pkg
 using Documenter, BED
 
+format = Documenter.HTML(
+    edit_link = "develop"
+)
+
 makedocs(
-    format = Documenter.HTML(
-        edit_link = "develop"
-    ),
+    format = format,
+    checkdocs = :all,
+    linkcheck = true,
     modules = [BED],
     sitename = "BED.jl",
     pages = [
@@ -13,7 +17,6 @@ makedocs(
         "API Reference" => "man/api.md"
     ],
     authors = replace(join(Pkg.TOML.parsefile("Project.toml")["authors"], ", "), r" <.*?>" => "" ) * ", The BioJulia Organisation, and other contributors."
-
 )
 
 deploydocs(
