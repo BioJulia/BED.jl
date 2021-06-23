@@ -9,11 +9,11 @@ Create a data writer of the BED file format.
 # Arguments:
 * `output`: data sink
 """
-struct Writer <: BioCore.IO.AbstractWriter
+struct Writer <: BioGenerics.IO.AbstractWriter
     output::IO
 end
 
-function BioCore.IO.stream(writer::Writer)
+function BioGenerics.IO.stream(writer::Writer)
     return writer.output
 end
 

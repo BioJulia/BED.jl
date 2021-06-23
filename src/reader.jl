@@ -1,12 +1,12 @@
 # BED Reader
 # ==========
 
-mutable struct Reader <: BioCore.IO.AbstractReader
-    state::BioCore.Ragel.State
+mutable struct Reader <: BioGenerics.IO.AbstractReader
+    state::BioGenerics.Automa.State
     index::Union{Indexes.Tabix,Nothing}
 
     function Reader(input::BufferedStreams.BufferedInputStream, index=nothing)
-        return new(BioCore.Ragel.State(file_machine.start_state, input), index)
+        return new(BioGenerics.Automa.State(stream, 1, 1, false), index)
     end
 end
 
@@ -51,7 +51,7 @@ function Base.eltype(::Type{Reader})
     return Record
 end
 
-function BioCore.IO.stream(reader::Reader)
+function BioGenerics.IO.stream(reader::Reader)
     return reader.state.stream
 end
 

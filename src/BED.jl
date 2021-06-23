@@ -3,7 +3,7 @@ module BED
 import Automa
 import Automa.RegExp: @re_str
 import BGZFStreams
-import BioCore
+import BioGenerics
 import BufferedStreams
 import ColorTypes
 import FixedPointNumbers: N0f8

@@ -34,6 +34,28 @@ end
 close(reader)
 ```
 
+The iterator interface demonstrated above allocates an object for each record and that may be a bottleneck of reading data from a file.
+In-place reading reuses a pre-allocated object for every record and less memory allocation happens in reading:
+
+```julia
+# Import the BED module.
+using BED
+
+# Open a BED file.
+reader = open(BED.Reader, "data.bed")
+
+# Pre-allocate record.
+record = BED.Record()
+while !eof(reader)
+    empty!(record)
+    read!(reader, record)
+    # do something
+end
+
+# Finally, close the reader.
+close(reader)
+```
+
 If you repeatedly access records within specific ranges, it would be more efficient to construct an `IntervalCollection` object from a BED reader:
 ```julia
 using BED
