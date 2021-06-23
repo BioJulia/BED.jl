@@ -1,7 +1,7 @@
 name = "BED"
 uuid = "8e4a8c10-cb6b-11e8-08d2-83478d609d67"
 authors = ["Kenta Sato <bicycle1885@gmail.com>", "Daniel C. Jones <dcjones@cs.washington.edu>", "Ben J. Ward <ward9250@gmail.com>", "Ciarán O’Mara <Ciaran.OMara@utas.edu.au>"]
-version = "0.1.0"
+version = "0.1.1"
 
 [deps]
 Automa = "67c07d97-cdcb-5c2c-af73-a7f9c32a568b"
