@@ -14,6 +14,21 @@ for record in reader
 end
 
 # Finally, close the reader.
+close(reader)</code></pre><p>The iterator interface demonstrated above allocates an object for each record and that may be a bottleneck of reading data from a file. In-place reading reuses a pre-allocated object for every record and less memory allocation happens in reading:</p><pre><code class="language-julia"># Import the BED module.
+using BED
+
+# Open a BED file.
+reader = open(BED.Reader, &quot;data.bed&quot;)
+
+# Pre-allocate record.
+record = BED.Record()
+while !eof(reader)
+    empty!(record)
+    read!(reader, record)
+    # do something
+end
+
+# Finally, close the reader.
 close(reader)</code></pre><p>If you repeatedly access records within specific ranges, it would be more efficient to construct an <code>IntervalCollection</code> object from a BED reader:</p><pre><code class="language-julia">using BED
 using GenomicFeatures
 
@@ -27,4 +42,4 @@ for interval in eachoverlap(icol, Interval(&quot;chrX&quot;, 40001, 51500))
     # A record is stored in the metadata field of an interval.
     record = metadata(interval)
     # ...
-end</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../api/">API Reference »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Wednesday 27 May 2020 09:44">Wednesday 27 May 2020</span>. Using Julia version 1.4.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+end</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../">« Home</a><a class="docs-footer-nextpage" href="../api/">API Reference »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Wednesday 23 June 2021 07:38">Wednesday 23 June 2021</span>. Using Julia version 1.6.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
