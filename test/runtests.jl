@@ -3,6 +3,7 @@ using BED
 
 
 using Distributions
+using Documenter
 using FormatSpecimens
 using GenomicFeatures
 
@@ -33,6 +34,7 @@ function random_intervals(seqnames, maxpos::Int, n::Int)
 end
 
 @testset "BED" begin
+
     @testset "Record" begin
         record = BED.Record("chr1\t17368\t17436")
         @test BED.chrom(record) == "chr1"
@@ -217,4 +219,7 @@ end
         end
         @test isa(BED.Reader(path), BED.Reader)
     end
+
+    doctest(BED; manual = false)
+
 end
