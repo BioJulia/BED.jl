@@ -1,34 +1,35 @@
 name = "BED"
 uuid = "8e4a8c10-cb6b-11e8-08d2-83478d609d67"
 authors = ["Kenta Sato <bicycle1885@gmail.com>", "Daniel C. Jones <dcjones@cs.washington.edu>", "Ben J. Ward <ward9250@gmail.com>", "Ciarán O’Mara <Ciaran.OMara@utas.edu.au>"]
-version = "0.1.1"
+version = "0.2.0"
 
 [deps]
 Automa = "67c07d97-cdcb-5c2c-af73-a7f9c32a568b"
 BGZFStreams = "28d598bf-9b8f-59f1-b38c-5a06b4a0f5e6"
-BioCore = "37cfa864-2cd6-5c12-ad9e-b6597d696c81"
-BufferedStreams = "e1450e63-4bb3-523b-b2a4-4ffa8c0fd77d"
+BioGenerics = "47718e42-2ac5-11e9-14af-e5595289c2ea"
 ColorTypes = "3da002f7-5984-5a60-b8a6-cbb66c0b333f"
 FixedPointNumbers = "53c48c17-4a7d-5ca2-90c5-79b7896eea93"
 GenomicFeatures = "899a7d2d-5c61-547b-bef9-6698a8d05446"
 Indexes = "4ffb77ac-cb80-11e8-1b35-4b78cc642f6d"
+TranscodingStreams = "3bb67fe8-82b1-5028-8e26-92a6c54297fa"
 
 [compat]
 Automa = "0.7, 0.8"
 BGZFStreams = "0.3"
-BioCore = "2"
-BufferedStreams = "1"
+BioGenerics = "0.1"
 ColorTypes = "0.7, 0.8, 0.9"
 FixedPointNumbers = "0.5, 0.6, 0.7"
 GenomicFeatures = "2"
 Indexes = "0.1"
+TranscodingStreams = "0.9.5"
 julia = "1"
 
 [extras]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 FormatSpecimens = "3372ea36-2a1a-11e9-3eb7-996970b6ffbd"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Distributions", "FormatSpecimens", "Random", "Test"]
+test = ["Distributions", "Documenter", "FormatSpecimens", "Random", "Test"]
