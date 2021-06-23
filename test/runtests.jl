@@ -220,6 +220,8 @@ end
         @test isa(BED.Reader(path), BED.Reader)
     end
 
+    # Include doctests.
+    DocMeta.setdocmeta!(BED, :DocTestSetup, :(using BED); recursive=true)
     doctest(BED; manual = false)
 
 end
