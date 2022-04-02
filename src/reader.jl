@@ -85,6 +85,7 @@ function GenomicFeatures.eachoverlap(reader::Reader, interval::GenomicFeatures.I
 end
 
 const record_machine, file_machine = (function ()
+    alt = Automa.RegExp.alt
     cat = Automa.RegExp.cat
     rep = Automa.RegExp.rep
     opt = Automa.RegExp.opt
@@ -167,6 +168,12 @@ const record_machine, file_machine = (function ()
     record.actions[:enter] = [:mark]
     record.actions[:exit] = [:record]
 
+    hspace = re"[ \t\v]"
+
+    blankline = rep(hspace)
+
+    comment = re"#.*"
+
     newline = let
         lf = re"\n"
         lf.actions[:enter] = [:countline]
@@ -174,7 +181,11 @@ const record_machine, file_machine = (function ()
         cat(opt('\r'), lf)
     end
 
-    file = rep(cat(record, newline))
+    file = rep(alt(
+        cat(record, newline),
+        cat(blankline, newline),
+        cat(comment, newline),
+    ))
 
     return map(Automa.compile, (record, file))
 end)()
