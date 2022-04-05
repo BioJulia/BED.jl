@@ -148,6 +148,71 @@ end
         @test_throws Exception check_bed_parse(filepath)
     end
 
+    # https://github.com/BioJulia/BED.jl/issues/13
+    str = """
+
+    # comment
+    test1\t1\t9
+
+
+    test2\t1\t9
+    test3\t1\t9
+        \t \t
+    # comment
+    # comment
+    test4\t1\t9
+
+    """
+
+    @test collect(BED.Reader(IOBuffer(str))) == BED.Record.(string.("test", 1:4, "\t1\t9"))
+
+    str = """
+    # HOMER Peaks
+    # Peak finding parameters:
+    # tag directory = GM_tagdir
+    #
+    # total peaks = 158781
+    # peak size = 153
+    # peaks found using tags on both strands
+    # minimum distance between peaks = 306
+    # fragment length = 152
+    # genome size = 2000000000
+    # Total tags = 322230773.0
+    # Total tags in peaks = 93989466.0
+    # Approximate IP efficiency = 29.17%
+    # tags per bp = 0.114786
+    # expected tags per peak = 17.562
+    # maximum tags considered per bp = 16.0
+    # effective number of tags used for normalization = 10000000.0
+    # Peaks have been centered at maximum tag pile-up
+    # FDR rate threshold = 0.001000000
+    # FDR effective poisson threshold = 1.591138e-05
+    # FDR tag threshold = 38.0
+    # number of putative peaks = 682969
+    #
+    # size of region used for local filtering = 10000
+    # Fold over local region required = 4.00
+    # Poisson p-value over local region required = 1.00e-04
+    # Putative peaks filtered by local signal = 523066
+    #
+    # Maximum fold under expected unique positions for tags = 2.00
+    # Putative peaks filtered for being too clonal = 1122
+    #
+    # cmd = findPeaks GM_tagdir -style factor -o GM.peaks.txt
+    #
+    # Column Headers:
+    #PeakID\tchr\tstart\tend\tstrand\tNormalized Tag Count\tfocus ratio\tfindPeaks Score\tFold Change vs Local\tp-value vs Local\tClonal Fold Change
+    chr21\t8401346\t8401499\tchr21-3\t1\t+
+    chr21\t8445578\t8445731\tchr21-1\t1\t+
+    chr21\t8218308\t8218461\tchr21-2\t1\t+
+    """
+
+    @test collect(BED.Reader(IOBuffer(str))) == [
+        BED.Record("chr21\t8401346\t8401499\tchr21-3\t1\t+"),
+        BED.Record("chr21\t8445578\t8445731\tchr21-1\t1\t+"),
+        BED.Record("chr21\t8218308\t8218461\tchr21-2\t1\t+"),
+    ]
+
     #=
     Testing strategy: there are two entirely separate intersection algorithms for IntervalCollection and IntervalStream.
     Here we test them both by checking that they agree by generating and intersecting random BED files.

@@ -9,7 +9,8 @@
 > This project follows the [semver](http://semver.org) pro forma and uses the [git-flow branching model](https://nvie.com/posts/a-successful-git-branching-model/ "original blog post").
 
 ## Description
-BED provides I/O and utilities for the BED file format.
+BED provides I/O and utilities for the [BED file format](https://samtools.github.io/hts-specs/BEDv1.pdf).
+
 
 ## Installation
 You can install the BED package from the [Julia REPL](https://docs.julialang.org/en/v1/manual/getting-started/).
