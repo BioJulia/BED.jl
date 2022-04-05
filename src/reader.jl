@@ -264,8 +264,8 @@ Automa.Stream.generate_reader(
 function index!(record::Record)
     stream = TranscodingStreams.NoopStream(IOBuffer(record.data))
     cs = index!(stream, record)
-    if cs < 0
-        throw(ArgumentError("invalid record"))
+    if cs != 0
+        throw(ArgumentError("Invalid BED record. Machine failed to transition from state $(cs)."))
     end
     return record
 end
@@ -291,5 +291,5 @@ function Base.read!(rdr::Reader, record::Record)
         throw(EOFError())
     end
 
-    throw(ArgumentError("malformed file"))
+    throw(ArgumentError("Malformed BED file record at line $(ln). Machine failed to transition from state $(cs)."))
 end
