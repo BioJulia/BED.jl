@@ -12,13 +12,13 @@ import ColorTypes: RGB
 import FixedPointNumbers: N0f8
 import BGZFStreams
 
-# Generate an array of n random Interval{Int} object. With sequence names
+# Generate an array of n random GenomicInterval{Int} object. With sequence names
 # samples from seqnames, and intervals drawn to lie in [1, maxpos].
 function random_intervals(seqnames, maxpos::Int, n::Int)
     seq_dist = Categorical(length(seqnames))
     strand_dist = Categorical(2)
     length_dist = Normal(1000, 1000)
-    intervals = Vector{Interval{Int}}(undef, n)
+    intervals = Vector{GenomicInterval{Int}}(undef, n)
     for i in 1:n
         intlen = maxpos
         while intlen >= maxpos || intlen <= 0
@@ -27,7 +27,7 @@ function random_intervals(seqnames, maxpos::Int, n::Int)
         first = rand(1:maxpos-intlen)
         last = first + intlen - 1
         strand = rand(strand_dist) == 1 ? STRAND_POS : STRAND_NEG
-        intervals[i] = Interval{Int}(seqnames[rand(seq_dist)],
+        intervals[i] = GenomicInterval{Int}(seqnames[rand(seq_dist)],
                                      first, last, strand, i)
     end
     return intervals
@@ -214,22 +214,22 @@ end
     ]
 
     #=
-    Testing strategy: there are two entirely separate intersection algorithms for IntervalCollection and IntervalStream.
+    Testing strategy: there are two entirely separate intersection algorithms for GenomicIntervalCollection and GenomicIntervalStream.
     Here we test them both by checking that they agree by generating and intersecting random BED files.
     =#
 
     function check_intersection(filename_a, filename_b)
-        ic_a = IntervalCollection{BED.Record}()
+        ic_a = GenomicIntervalCollection{BED.Record}()
         open(BED.Reader, filename_a) do reader
             for record in reader
-                push!(ic_a, Interval(record))
+                push!(ic_a, GenomicInterval(record))
             end
         end
 
-        ic_b = IntervalCollection{BED.Record}()
+        ic_b = GenomicIntervalCollection{BED.Record}()
         open(BED.Reader, filename_b) do reader
             for record in reader
-                push!(ic_b, Interval(record))
+                push!(ic_b, GenomicInterval(record))
             end
         end
 
@@ -272,10 +272,10 @@ end
         stream = BGZFStreams.BGZFStream(path)
         reader = BED.Reader(stream, index=string(path, ".tbi"))
         for (interval, n_records) in [
-                (Interval("chrII", 500_000:10_000_000), 38),
-                (Interval("chrII", 1:70_000), 0),
-                (Interval("chrIV", 500_000:10_000_000), 43),
-                (Interval("chrI",  1_000_000:12_000_000), 27),]
+                (GenomicInterval("chrII", 500_000:10_000_000), 38),
+                (GenomicInterval("chrII", 1:70_000), 0),
+                (GenomicInterval("chrIV", 500_000:10_000_000), 43),
+                (GenomicInterval("chrI",  1_000_000:12_000_000), 27),]
             n = 0
             for record in eachoverlap(reader, interval)
                 n += 1
