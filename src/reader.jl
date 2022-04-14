@@ -77,7 +77,7 @@ function Base.iterate(reader::Reader, nextone = Record())
     return copy(nextone), empty!(nextone) # Empty record for inplace reading and reuse of array allocations.
 end
 
-function GenomicFeatures.eachoverlap(reader::Reader, interval::GenomicFeatures.Interval)
+function GenomicFeatures.eachoverlap(reader::Reader, interval::GenomicFeatures.AbstractGenomicInterval)
     if reader.index === nothing
         throw(ArgumentError("index is null"))
     end
