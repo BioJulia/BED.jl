@@ -56,18 +56,18 @@ end
 close(reader)
 ```
 
-If you repeatedly access records within specific ranges, it would be more efficient to construct an `IntervalCollection` object from a BED reader:
+If you repeatedly access records within specific ranges, it would be more efficient to construct an `GenomicIntervalCollection` object from a BED reader:
 ```julia
 using BED
 using GenomicFeatures
 
 # Create an interval collection in memory.
 icol = open(BED.Reader, "data.bed") do reader
-    IntervalCollection(reader)
+    GenomicIntervalCollection(reader)
 end
 
 # Query overlapping records.
-for interval in eachoverlap(icol, Interval("chrX", 40001, 51500))
+for interval in eachoverlap(icol, GenomicInterval("chrX", 40001, 51500))
     # A record is stored in the metadata field of an interval.
     record = metadata(interval)
     # ...

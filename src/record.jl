@@ -96,20 +96,24 @@ function Base.empty!(record::Record)
     return record
 end
 
-function GenomicFeatures.Interval(record::Record)
+function GenomicFeatures.GenomicInterval(record::Record)
     name = BioGenerics.seqname(record)
     lpos = BioGenerics.leftposition(record)
     rpos = BioGenerics.rightposition(record)
     strd = hasstrand(record) ? GenomicFeatures.strand(record) : GenomicFeatures.STRAND_BOTH
-    return GenomicFeatures.Interval(name, lpos, rpos, strd, record)
+    return GenomicFeatures.GenomicInterval(name, lpos, rpos, strd, record)
 end
 
-function Base.convert(::Type{GenomicFeatures.Interval}, record::Record)
-    return GenomicFeatures.Interval(record)
+function Base.convert(::Type{GenomicFeatures.GenomicInterval}, record::Record)
+    return GenomicFeatures.GenomicInterval(record)
 end
 
-function Base.convert(::Type{GenomicFeatures.Interval{Record}}, record::Record)
-    return convert(GenomicFeatures.Interval, record)
+function Base.convert(::Type{GenomicFeatures.GenomicInterval{Record}}, record::Record)
+    return convert(GenomicFeatures.GenomicInterval, record)
+end
+
+function GenomicFeatures.intervaltype(::Type{Record})
+    return GenomicFeatures.GenomicInterval{Record}
 end
 
 function isfilled(record::Record)
