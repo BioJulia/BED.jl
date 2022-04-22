@@ -5,12 +5,12 @@
 [![MIT license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/BioJulia/BED.jl/blob/master/LICENSE)
 [![Stable documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://biojulia.github.io/BED.jl/stable)
 [![Latest documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://biojulia.github.io/BED.jl/dev/)
-[![Join the chat at https://gitter.im/BioJulia/BED.jl](https://badges.gitter.im/BioJulia/BED.jl.svg)](https://gitter.im/BioJulia/BED.jl)
 
 > This project follows the [semver](http://semver.org) pro forma and uses the [git-flow branching model](https://nvie.com/posts/a-successful-git-branching-model/ "original blog post").
 
 ## Description
-BED provides I/O and utilities for the BED file format.
+BED provides I/O and utilities for the [BED file format](https://samtools.github.io/hts-specs/BEDv1.pdf).
+
 
 ## Installation
 You can install the BED package from the [Julia REPL](https://docs.julialang.org/en/v1/manual/getting-started/).
@@ -27,8 +27,8 @@ BED is tested against Julia `1.X` on Linux, OS X, and Windows.
 
 **Latest build status:**
 
-[![Unit tests](https://github.com/BioJulia/BED.jl/workflows/Unit%20tests/badge.svg?branch=master)](https://github.com/BioJulia/BED.jl/actions?query=workflow%3A%22Unit+tests%22+branch%3Amaster)
-[![Documentation](https://github.com/BioJulia/BED.jl/workflows/Documentation/badge.svg?branch=master)](https://github.com/BioJulia/BED.jl/actions?query=workflow%3ADocumentation+branch%3Amaster)
+[![Unit Tests](https://github.com/BioJulia/BED.jl/actions/workflows/UnitTests.yml/badge.svg)](https://github.com/BioJulia/BED.jl/actions/workflows/UnitTests.yml)
+[![Documentation](https://github.com/BioJulia/BED.jl/actions/workflows/Documentation.yml/badge.svg)](https://github.com/BioJulia/BED.jl/actions/workflows/Documentation.yml)
 [![codecov](https://codecov.io/gh/BioJulia/BED.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/BioJulia/BED.jl)
 
 ## Contributing
@@ -66,4 +66,4 @@ Your logo will show up here with a link to your website.
 
 
 ## Questions?
-If you have a question about contributing or using BioJulia software, come on over and chat to us on [Gitter](https://gitter.im/BioJulia/General), or you can try the [Bio category of the Julia discourse site](https://discourse.julialang.org/c/domain/bio).
+If you have a question about contributing or using BioJulia software, come on over and chat to us on [the Julia Slack workspace](https://julialang.org/slack/), or you can try the [Bio category of the Julia discourse site](https://discourse.julialang.org/c/domain/bio).
