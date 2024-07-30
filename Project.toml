@@ -14,7 +14,7 @@ Indexes = "4ffb77ac-cb80-11e8-1b35-4b78cc642f6d"
 TranscodingStreams = "3bb67fe8-82b1-5028-8e26-92a6c54297fa"
 
 [compat]
-Automa = "0.7, 0.8"
+Automa = "1"
 BGZFStreams = "0.3"
 BioGenerics = "0.1"
 ColorTypes = "0.7, 0.8, 0.9, 0.10, 0.11"
