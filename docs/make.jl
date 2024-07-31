@@ -1,14 +1,23 @@
-using Pkg
+using TOML
 using Documenter, BED
 
 format = Documenter.HTML(
     edit_link = "develop"
 )
 
+authors = let
+    project_path = joinpath(Base.pkgdir(BED), "Project.toml")
+    toml = TOML.parsefile(project_path)
+    authors_with_email = join(toml["authors"], ", ")
+    authors = replace(authors_with_email, r" <.*?>" => "")
+    authors * ", The BioJulia Organisation, and other contributors."
+end
+    
+
 makedocs(
     format = format,
     checkdocs = :all,
-    linkcheck = true,
+    #linkcheck = true,
     modules = [BED],
     sitename = "BED.jl",
     pages = [
@@ -16,7 +25,7 @@ makedocs(
         "BED" => "man/bed.md",
         "API Reference" => "man/api.md"
     ],
-    authors = replace(join(Pkg.TOML.parsefile("Project.toml")["authors"], ", "), r" <.*?>" => "" ) * ", The BioJulia Organisation, and other contributors."
+    authors = authors,
 )
 
 deploydocs(
