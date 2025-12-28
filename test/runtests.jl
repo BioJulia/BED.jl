@@ -125,7 +125,7 @@ end
 
     for specimen in list_valid_specimens("BED")
 
-        if hastag(specimen, "gzip")
+        if hastag(specimen, "bgzip") || hastag(specimen, "gzip")
             # skip compressed files
             continue
         end
