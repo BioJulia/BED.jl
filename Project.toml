@@ -13,6 +13,12 @@ GenomicFeatures = "899a7d2d-5c61-547b-bef9-6698a8d05446"
 Indexes = "4ffb77ac-cb80-11e8-1b35-4b78cc642f6d"
 TranscodingStreams = "3bb67fe8-82b1-5028-8e26-92a6c54297fa"
 
+[weakdeps]
+FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
+
+[extensions]
+FileIOExt = "FileIO"
+
 [compat]
 Automa = "1"
 BGZFStreams = "0.3"
@@ -30,6 +36,7 @@ Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 FormatSpecimens = "3372ea36-2a1a-11e9-3eb7-996970b6ffbd"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
 
 [targets]
-test = ["Distributions", "Documenter", "FormatSpecimens", "Random", "Test"]
+test = ["Distributions", "Documenter", "FormatSpecimens", "Random", "Test", "FileIO"]

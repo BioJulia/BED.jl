@@ -15,4 +15,8 @@ include("record.jl")
 include("reader.jl")
 include("writer.jl")
 
+# placeholder for FileIO interface
+fileio_load() = nothing
+fileio_save() = nothing
+
 end # module

@@ -6,6 +6,7 @@ using Distributions
 using Documenter
 using FormatSpecimens
 using GenomicFeatures
+using FileIO
 
 import Random
 import ColorTypes: RGB
@@ -130,7 +131,7 @@ end
             continue
         end
 
-        filepath = joinpath(dir_bed, filename(specimen))
+        filepath = joinpath(dir_bed, FormatSpecimens.filename(specimen))
 
         @test check_bed_parse(filepath)
 
@@ -143,7 +144,7 @@ end
             continue
         end
 
-        filepath = joinpath(dir_bed, filename(specimen))
+        filepath = joinpath(dir_bed, FormatSpecimens.filename(specimen))
 
         @test_throws Exception check_bed_parse(filepath)
     end
@@ -283,6 +284,26 @@ end
             @test n == n_records
         end
         @test isa(BED.Reader(path), BED.Reader)
+    end
+
+    @testset "FileIO" begin
+
+        dir_bed = path_of_format("BED")
+    
+        for specimen in list_valid_specimens("BED")
+            if hastag(specimen, "gzip")
+                # skip compressed files
+                continue
+            end
+            
+            mktempdir() do dir
+                filepath = joinpath(dir_bed, FormatSpecimens.filename(specimen))
+                records = FileIO.load(filepath)
+                
+                FileIO.save(joinpath(dir, "tmp.bed"), records)
+                @test [record for record in open(BED.Reader, filepath)] == records
+            end
+        end
     end
 
     # Include doctests.
