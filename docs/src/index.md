@@ -24,16 +24,16 @@ If you are interested in the cutting edge of the development, please check out t
 ## Testing
 BED is tested against on the LTS version, and newest version of Julia on Linux, OS X, and Windows.
 
-**Latest build status:**
+**Latest build status of the [develop branch](https://github.com/BioJulia/BED.jl/tree/develop):**
 
-[![Unit Tests](https://github.com/BioJulia/BED.jl/actions/workflows/UnitTests.yml/badge.svg)](https://github.com/BioJulia/BED.jl/actions/workflows/UnitTests.yml)
-[![Documentation](https://github.com/BioJulia/BED.jl/actions/workflows/Documentation.yml/badge.svg)](https://github.com/BioJulia/BED.jl/actions/workflows/Documentation.yml)
-[![codecov](https://codecov.io/gh/BioJulia/BED.jl/branch/master/graph/badge.svg)](https://app.codecov.io/gh/BioJulia/BED.jl)
+[![Unit tests](https://github.com/BioJulia/BED.jl/workflows/Unit%20tests/badge.svg?branch=develop)](https://github.com/BioJulia/BED.jl/actions?query=workflow%3A%22Unit+tests%22+branch%3Adevelop)
+[![Documentation](https://github.com/BioJulia/BED.jl/workflows/Documentation/badge.svg?branch=develop)](https://github.com/BioJulia/BED.jl/actions?query=workflow%3ADocumentation+branch%3Adevelop)
+[![codecov](https://codecov.io/gh/BioJulia/BED.jl/branch/develop/graph/badge.svg)](https://codecov.io/gh/BioJulia/BED.jl)
 
 ## Contributing
-We appreciate [contributions](https://github.com/BioJulia/BED.jl/graphs/contributors) from users including reporting bugs, fixing issues, improving performance and adding new features.
+We appreciate contributions from users, including reporting bugs, fixing issues, improving performance and adding new features.
 
-Take a look at the [contributing files](https://github.com/BioJulia/Contributing) detailed contributor and maintainer guidelines, and code of conduct.
+See the [contributing files](https://github.com/BioJulia/Contributing) for detailed contributor and maintainer guidelines and the code of conduct.
 
 ## Questions?
-If you have a question about contributing or using BioJulia software, come on over and chat to us on [the Julia Slack workspace](https://julialang.org/slack/), or you can try the [Bio category of the Julia discourse site](https://discourse.julialang.org/c/domain/bio/15).
+If you have a question about contributing or using BioJulia software, join us on [the Julia Slack workspace](https://julialang.org/slack/), or visit the [Bio category on Julia Discourse](https://discourse.julialang.org/c/domain/bio).
