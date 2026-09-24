@@ -1,4 +1,5 @@
-name: Documentation
+name: Build Documentation
+
 on:
   push:
     branches:
@@ -12,8 +13,18 @@ jobs:
   Documenter:
     name: Documentation
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: read
+      statuses: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
+      - uses: julia-actions/setup-julia@v3
+        with:
+          version: '1.10' # LTS
+          show-versioninfo: true
+      - uses: julia-actions/cache@v3
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-docdeploy@v1
         env:
