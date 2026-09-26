@@ -1,9 +1,5 @@
 # BED Reader
 # ==========
-import Automa
-import Automa.RegExp: @re_str
-import Automa.Stream: @mark, @markpos, @relpos, @abspos
-
 function appendfrom!(dst, dpos, src, spos, n)
     if length(dst) < dpos + n - 1
         resize!(dst, dpos + n - 1)
@@ -84,72 +80,34 @@ function GenomicFeatures.eachoverlap(reader::Reader, interval::GenomicFeatures.I
     return Indexes.TabixOverlapIterator(reader, interval)
 end
 
-const record_machine, file_machine = (function ()
+const record_machine, file_machine = let
     alt = Automa.RegExp.alt
     cat = Automa.RegExp.cat
     rep = Automa.RegExp.rep
     opt = Automa.RegExp.opt
 
     record = let
-        chrom = re"[ -~]*"
-        chrom.actions[:enter] = [:pos]
-        chrom.actions[:exit] = [:record_chrom]
-
-        chromstart = re"[0-9]+"
-        chromstart.actions[:enter] = [:pos]
-        chromstart.actions[:exit] = [:record_chromstart]
-
-        chromend = re"[0-9]+"
-        chromend.actions[:enter] = [:pos]
-        chromend.actions[:exit] = [:record_chromend]
-
-        name = re"[ -~]*"
-        name.actions[:enter] = [:pos]
-        name.actions[:exit] = [:record_name]
-
-        score = re"[0-9]+"
-        score.actions[:enter] = [:pos]
-        score.actions[:exit] = [:record_score]
-
-        strand = re"[+\-.?]"
-        strand.actions[:enter] = [:record_strand] #Note: single byte.
-
-        thickstart = re"[0-9]+"
-        thickstart.actions[:enter] = [:pos]
-        thickstart.actions[:exit] = [:record_thickstart]
-
-        thickend = re"[0-9]+"
-        thickend.actions[:enter] = [:pos]
-        thickend.actions[:exit] = [:record_thickend]
-
+        # Note: The name cannot end with a #, nor whitespace, because if so,
+        # it is undistinguishable from whitespace and comments
+        chrom = onexit!(onenter!(re"" | re"[^# \t\v\r\n\f][ -~]*", :pos), :record_chrom)
+        chromstart = onexit!(onenter!(re"[0-9]+", :pos), :record_chromstart)
+        chromend = onexit!(onenter!(re"[0-9]+", :pos), :record_chromend)
+        name = onexit!(onenter!(re"[ -~]*", :pos), :record_name)
+        score = onexit!(onenter!(re"[0-9]+", :pos), :record_score)
+        strand = onenter!(re"[+\-.?]", :record_strand) #Note: single byte.
+        thickstart = onexit!(onenter!(re"[0-9]+", :pos), :record_thickstart)
+        thickend = onexit!(onenter!(re"[0-9]+", :pos), :record_thickend)
         itemrgb = cat(re"[0-9]+", opt(cat(',', re"[0-9]+", ',', re"[0-9]+")))
-        itemrgb.actions[:enter] = [:pos]
-        itemrgb.actions[:exit] = [:record_itemrgb]
-
-        blockcount = re"[0-9]+"
-        blockcount.actions[:enter] = [:pos]
-        blockcount.actions[:exit] = [:record_blockcount]
+        onexit!(onenter!(itemrgb, :pos), :record_itemrgb)
+        blockcount = onexit!(onenter!(re"[0-9]+", :pos), :record_blockcount)
 
         # comma-separated values
         csv(x) = cat(rep(cat(x, ',')), opt(x))
 
-        blocksizes = let
-            blocksize = re"[0-9]+"
-            blocksize.actions[:enter] = [:pos]
-            blocksize.actions[:exit] = [:record_blocksizes_blocksize]
-
-            csv(blocksize)
-        end
-        blocksizes.actions[:exit] = [:record_blocksizes]
-
-        blockstarts = let
-            blockstart = re"[0-9]+"
-            blockstart.actions[:enter] = [:pos]
-            blockstart.actions[:exit] = [:record_blockstarts_blockstart]
-
-            csv(blockstart)
-        end
-        blockstarts.actions[:exit] = [:record_blockstarts]
+        blocksizes = csv(onexit!(onenter!(re"[0-9]+", :pos), :record_blocksizes_blocksize))
+        onexit!(blocksizes, :record_blocksizes)
+        blockstarts = csv(onexit!(onenter!(re"[0-9]+", :pos), :record_blockstarts_blockstart))
+        onexit!(blockstarts, :record_blockstarts)
 
         cat(
             chrom, '\t',
@@ -165,19 +123,16 @@ const record_machine, file_machine = (function ()
             opt(cat('\t', blocksizes,
             opt(cat('\t', blockstarts)))))))))))))))))))
     end
-    record.actions[:enter] = [:mark]
-    record.actions[:exit] = [:record]
+    onexit!(onenter!(record, :mark), :record)
+    hspace = re"[ \t\v\f]"
 
-    hspace = re"[ \t\v]"
-
-    blankline = rep(hspace)
-
-    comment = re"#.*"
+    # Note: We cannot start with a tab, because then it is indistinguishable
+    # from an empty chrom field
+    blankline = opt(re"[ \v\f]" * rep(hspace))
+    comment = re"#[^\n]*"
 
     newline = let
-        lf = re"\n"
-        lf.actions[:enter] = [:countline]
-
+        lf = onenter!(re"\n", :countline)
         cat(opt('\r'), lf)
     end
 
@@ -187,18 +142,12 @@ const record_machine, file_machine = (function ()
         cat(comment, newline),
     ))
 
-    return map(Automa.compile, (record, file))
-end)()
-
-#=
-write("bed.dot", Automa.machine2dot(file_machine))
-run(`dot -Tsvg -o bed.svg bed.dot`)
-=#
+    map(Automa.compile, (record, file))
+end
 
 const record_actions = Dict(
     :mark => :(@mark),
     :pos => :(pos = @relpos(p)),
-    :countline => :(),
     :record_chrom => :(record.chrom = (pos:@relpos(p-1)); record.ncols += 1),
     :record_chromstart => :(record.chromstart = (pos:@relpos(p-1)); record.ncols += 1),
     :record_chromend => :(record.chromend = (pos:@relpos(p-1)); record.ncols += 1),
@@ -216,7 +165,7 @@ const record_actions = Dict(
     :record => :(record.filled = 1:@relpos(p-1))
 )
 
-Automa.Stream.generate_reader(
+Automa.generate_reader(
     :index!,
     record_machine,
     arguments = (:(record::Record),),
@@ -242,7 +191,7 @@ const loopcode = quote
     end
 end
 
-Automa.Stream.generate_reader(
+Automa.generate_reader(
     :readrecord!,
     file_machine,
     arguments = (:(record::Record), :(state::Tuple{Int,Int})),

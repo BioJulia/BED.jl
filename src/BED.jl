@@ -1,7 +1,7 @@
 module BED
 
-import Automa
-import Automa.RegExp: @re_str
+using Automa: Automa, @re_str, @mark, @markpos, @relpos, @abspos
+using Automa: onenter!, onexit!
 import BGZFStreams
 import BioGenerics
 import ColorTypes
