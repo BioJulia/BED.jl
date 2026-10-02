@@ -1,7 +1,7 @@
 [deps]
 BED = "8e4a8c10-cb6b-11e8-08d2-83478d609d67"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
-Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
+TOML = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 
 [compat]
-Documenter = "0.27"
+Documenter = "1"
