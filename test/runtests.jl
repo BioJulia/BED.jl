@@ -1,6 +1,6 @@
 using Test
 using BED
-
+using BioGenerics
 
 using Distributions
 using Documenter
@@ -40,6 +40,13 @@ end
         @test BED.chrom(record) == "chr1"
         @test BED.chromstart(record) === 17369
         @test BED.chromend(record) === 17436
+        @test BioGenerics.seqname(record) == "chr1"
+        @test BioGenerics.hasseqname(record)
+        @test BioGenerics.leftposition(record) === 17369
+        @test BioGenerics.hasleftposition(record)
+        @test BioGenerics.rightposition(record) === 17436
+        @test BioGenerics.hasrightposition(record)
+        @test BioGenerics.isfilled(record)
         @test !BED.hasname(record)
         @test !BED.hasscore(record)
         @test !BED.hasstrand(record)
@@ -51,6 +58,12 @@ end
         @test !BED.hasblockstarts(record)
         @test startswith(repr(record), "BED.Record:\n")
         @test string(record) == "chr1\t17368\t17436"
+        interval = GenomicInterval(record)
+        @test BioGenerics.seqname(interval) == "chr1"
+        @test BioGenerics.leftposition(interval) === 17369
+        @test BioGenerics.rightposition(interval) === 17436
+        @test GenomicFeatures.strand(interval) === STRAND_BOTH
+        @test BioGenerics.metadata(interval) === record
 
         record = BED.Record("chrXIII\t854794\t855293\tYMR292W\t0\t+\t854794\t855293\t0\t2\t22,395,\t0,104,")
         @test BED.chrom(record) == "chrXIII"
@@ -248,7 +261,7 @@ end
     function write_intervals(filename, intervals)
         open(filename, "w") do out
             for interval in sort(intervals)
-                println(out, interval.seqname, "\t", interval.first - 1, "\t", interval.last, "\t", interval.metadata, "\t", 1000, "\t", interval.strand)
+                println(out, seqname(interval), "\t", leftposition(interval) - 1, "\t", rightposition(interval), "\t", metadata(interval), "\t", 1000, "\t", strand(interval))
             end
         end
 

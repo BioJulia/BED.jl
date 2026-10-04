@@ -116,6 +116,10 @@ function isfilled(record::Record)
     return !isempty(record.filled)
 end
 
+function BioGenerics.isfilled(record::Record)
+    return isfilled(record)
+end
+
 function Base.:(==)(record1::Record, record2::Record)
     if isfilled(record1) == isfilled(record2) == true
         r1 = record1.filled
@@ -222,6 +226,14 @@ function BioGenerics.seqname(record::Record)
 end
 
 function BioGenerics.hasseqname(record::Record)
+    return haschrom(record)
+end
+
+function BioGenerics.groupname(record::Record)
+    return chrom(record)
+end
+
+function BioGenerics.hasgroupname(record::Record)
     return haschrom(record)
 end
 
